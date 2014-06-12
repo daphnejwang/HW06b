@@ -33,7 +33,6 @@ class WinterSquash(Cucurbits):
 def main():
     f = open("standing_orders2.log")
 
-
     for line in f:
         (melon_type, quantity) = line.rstrip().split(':')
         try:
@@ -44,21 +43,27 @@ def main():
         count = 0
         cucurbits = []
         while len(cucurbits) < quantity:
+            # print len(cucurbits)
+            # if melon_type == "Winter Squash":
+            #     c = WinterSquash(melon_type)
+            #     # print c
+            # else:
+            #     c = Cucurbits(melon_type)
+            c = Cucurbits(melon_type)
+            robots.pickerbot.pick(c)
+            if c.melon_type == "Winter Squash":
+                print c.melon_type
+                robots.painterbot.paint(c)
+
+            count += 1
+            
+            c.prep()
+
             if count > 200:
                 print "\nALL MELONS AND SQUASHES HAVE BEEN PICKED"
                 print "ORDERS FAILED TO BE FULFILLED!"
                 #break will just exit the loop, but exit will take you out of the system
                 sys.exit()
-
-            if melon_type == "WinterSquash":
-                c = WinterSquash()
-            else:
-                c = Cucurbits(melon_type)
-
-            robots.pickerbot.pick(c)
-            count += 1
-            
-            c.prep()
 
             # evaluate cucurbits
             presentable = robots.inspectorbot.evaluate(c)
